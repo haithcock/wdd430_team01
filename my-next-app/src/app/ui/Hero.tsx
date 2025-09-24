@@ -30,9 +30,7 @@ export default function Hero() {
           {/* Active Artisans */}
           <div>
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-[#FB923C]/10 text-[#FB923C]">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5V4H2v16h5m10-8a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
+              <i className="fa-solid fa-user"></i>
             </div>
             <h3 className="text-2xl font-bold">200+</h3>
             <p className="text-gray-600">Active Artisans</p>
@@ -40,9 +38,7 @@ export default function Hero() {
           {/* Handcrafted Items */}
           <div>
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-[#F97316]/10 text-[#F97316]">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8l3 3-3 3-3-3 3-3zm0 8h.01" />
-              </svg>
+              <i className="fa-solid fa-hands-holding-circle"></i>
             </div>
             <h3 className="text-2xl font-bold">1,200+</h3>
             <p className="text-gray-600">Handcrafted Items</p>
@@ -50,9 +46,7 @@ export default function Hero() {
           {/* Sustainable Materials */}
           <div>
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-[#EA580C]/10 text-[#EA580C]">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2l4 7h7l-5.5 4.5L19 21l-7-4-7 4 2.5-7.5L2 9h7z" />
-              </svg>
+              <i className="fa-solid fa-leaf"></i>
             </div>
             <h3 className="text-2xl font-bold">95%</h3>
             <p className="text-gray-600">Sustainable Materials</p>
@@ -60,9 +54,7 @@ export default function Hero() {
           {/* Customer Satisfaction */}
           <div>
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-full bg-[#EF4444]/10 text-[#EF4444]">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.356 7.265h7.634c.97 0 1.372 1.24.588 1.81l-6.173 4.486 2.357 7.266c.3.92-.755 1.688-1.54 1.117L12 18.896l-6.173 4.486c-.785.57-1.84-.197-1.54-1.117l2.357-7.266-6.173-4.486c-.784-.57-.382-1.81.588-1.81h7.634l2.356-7.265z" />
-              </svg>
+              <i className="fa-solid fa-hand-sparkles"></i>
             </div>
             <h3 className="text-2xl font-bold">4.9★</h3>
             <p className="text-gray-600">Customer Satisfaction</p>

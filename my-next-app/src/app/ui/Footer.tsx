@@ -1,4 +1,6 @@
 import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   const navLinks = [
@@ -20,9 +22,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and Mission */}
           <div className="flex flex-col items-start">
-            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 mb-2">
-              Handcrafted Haven
-            </h2>
+              <Link href="/" className="flex items-center gap-2">
+                <Image
+                  src="/logo.webp"
+                  alt="Handcrafted Haven Logo"
+                  width={70}
+                  height={70}
+                />
+                <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FB923C] to-[#EF4444]">Handcrafted Haven</span>
+            </Link>
             <p className="text-gray-400 text-sm max-w-xs">
               Discover unique handcrafted treasures from artisans around the world.
             </p>

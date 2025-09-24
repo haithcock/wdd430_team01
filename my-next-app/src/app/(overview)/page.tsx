@@ -1,7 +1,7 @@
 import Navbar from "@/app/ui/Navbar";
-import Hero from "@/app/(overview)/components/Hero";
-import Features from "@/app/(overview)/components/Features";
-import CallToAction from "@/app/ui/CallToAction";
+import Hero from "@/app/ui/Hero";
+import Features from "@/app/ui/Features";
+import FeaturedItems from "@/app/ui/FeaturedItems";
 import Contact from "@/app/ui/Contact";
 import Footer from "@/app/ui/Footer";
 
@@ -11,7 +11,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Features />
-      <CallToAction />
+      <FeaturedItems />
       <Contact />
       <Footer />
     </main>
