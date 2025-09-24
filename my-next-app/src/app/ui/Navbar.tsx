@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { clsx } from "clsx";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -9,11 +11,15 @@ export default function Navbar() {
   return (
     <header className="w-full bg-white border-b fixed top-0 left-0 z-50">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#" className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FB923C] to-[#EF4444]">
-          Handcrafted Haven
-        </a>
-
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/logo.webp"
+            alt="Handcrafted Haven Logo"
+            width={70}
+            height={70}
+          />
+          <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FB923C] to-[#EF4444]">Handcrafted Haven</span>
+      </Link>
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 text-gray-700 font-medium">
           {["Features", "Learn More", "Contact"].map((item) => (
