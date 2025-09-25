@@ -1,5 +1,5 @@
 import postgres from 'postgres';
-import { createProduct, getProducts } from '../lib/actions';
+import { createProduct } from '../lib/actions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
