@@ -15,6 +15,7 @@ const products = [
     originalPrice: 120,
     onSale: true,
     imageUrl: '/placeholder-images/vase.jpg',
+    featured: true
   },
   {
     category: 'Jewelry',
@@ -25,6 +26,7 @@ const products = [
     price: 145,
     onSale: false,
     imageUrl: '/placeholder-images/jewelry.jpg',
+    featured: true
   },
   {
     category: 'Textiles',
@@ -35,6 +37,7 @@ const products = [
     price: 198,
     onSale: false,
     imageUrl: '/placeholder-images/textiles.jpg',
+    featured: true
   },
   {
     category: 'Woodworking',
@@ -45,6 +48,7 @@ const products = [
     price: 425,
     onSale: false,
     imageUrl: '/placeholder-images/table.jpg',
+    featured: true
   },
 ];
 async function seedProducts() {
@@ -59,7 +63,8 @@ async function seedProducts() {
     price DECIMAL(7,2) NOT NULL,
     original_price DECIMAL(7,2),
     on_sale BOOLEAN DEFAULT FALSE,
-    image_url VARCHAR(300) NOT NULL
+    image_url VARCHAR(300) NOT NULL,
+    featured BOOLEAN DEFAULT FALSE
   )`;
 
   const insertedProducts = await Promise.all(
