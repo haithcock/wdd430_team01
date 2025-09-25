@@ -1,5 +1,6 @@
 import Button from '@/app/ui/Button';
 import ProductCard from '@/app/ui/ProductCard';
+import Link from 'next/link';
 
 const featuredItemsData = [
   {
@@ -61,7 +62,7 @@ export default function FeaturedItems() {
             </p>
           </div>
             <Button className="mt-6">
-                View all
+                <Link className="w-full h-full flex items-center justify-center" href="/catalog">View all</Link>
             </Button>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

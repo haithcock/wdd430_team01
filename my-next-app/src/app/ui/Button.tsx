@@ -10,7 +10,7 @@ export default function Button({ children, className, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={clsx(
-        'px-6 py-3 bg-gradient-to-r from-[#FB923C] to-[#EF4444] text-white font-medium rounded-lg shadow hover:opacity-90 transition',
+        'w-26 h-12 bg-gradient-to-r from-[#FB923C] to-[#EF4444] text-white font-medium rounded-lg shadow hover:opacity-90 transition',
         className,
       )}
     >
