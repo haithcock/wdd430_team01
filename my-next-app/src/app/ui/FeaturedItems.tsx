@@ -1,56 +1,23 @@
 import Button from '@/app/ui/Button';
 import ProductCard from '@/app/ui/ProductCard';
 import Link from 'next/link';
+import { getFeaturedProducts } from '../lib/data';
 
-const featuredItemsData = [
-  {
-    id: 1,
-    category: 'Pottery',
-    name: 'Hand-Thrown Ceramic Vase',
-    artisan: 'by Sarah Chen',
-    rating: 4.9,
-    reviews: 127,
-    price: 89,
-    originalPrice: 120,
-    onSale: true,
-    imageUrl: '/placeholder-images/vase.jpg',
-  },
-  {
-    id: 2,
-    category: 'Jewelry',
-    name: 'Sterling Silver Pendant...',
-    artisan: 'by Marcus Rivera',
-    rating: 5,
-    reviews: 89,
-    price: 145,
-    onSale: false,
-    imageUrl: '/placeholder-images/jewelry.jpg',
-  },
-  {
-    id: 3,
-    category: 'Textiles',
-    name: 'Handwoven Wool Throw...',
-    artisan: 'by Emma Thompson',
-    rating: 4.8,
-    reviews: 203,
-    price: 198,
-    onSale: false,
-    imageUrl: '/placeholder-images/textiles.jpg',
-  },
-  {
-    id: 4,
-    category: 'Woodworking',
-    name: 'Reclaimed Wood Coffee Table',
-    artisan: 'by David Park',
-    rating: 4.9,
-    reviews: 76,
-    price: 425,
-    onSale: false,
-    imageUrl: '/placeholder-images/table.jpg',
-  },
-];
 
-export default function FeaturedItems() {
+export default async function FeaturedItems() {
+  const featuredItemsData = (await getFeaturedProducts())
+    .map((item => ({
+      id: parseInt(item.product_id), 
+      category: item.category as string, 
+      name: item.name as string, 
+      artisan: item.artisan as string, 
+      rating: parseFloat(item.rating), 
+      reviews: parseInt(item.reviews),
+      price: parseFloat(item.price),
+      originalPrice: item.original_price ? parseFloat(item.original_price) : undefined,
+      onSale: item.on_sale as boolean,
+      imageUrl: item.image_url as string
+    })));
   return (
     <section className="bg-gradient-to-br from-orange-50 to-red-50 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
