@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { inter } from './lib/fonts';
 import "./global.css";
+import Navbar from "@/app/ui/Navbar";
+import Footer from "@/app/ui/Footer";
 
 
 export default function RootLayout({
@@ -13,7 +15,11 @@ export default function RootLayout({
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
     </head>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
