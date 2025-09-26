@@ -1,10 +1,25 @@
 import Button from '@/app/ui/Button';
 import Search from '@/app/ui/Search';
+import Image from 'next/image';
 
 
 export default function Hero() {
   return (
     <section className="flex flex-col items-center justify-center flex-1 text-center px-6 py-20 bg-gradient-to-br from-white via-orange-100 to-red-50 text-gray-900">
+      <Image
+        src= "/hero-pc.jpg"
+        width={1500}
+        height={500}
+        alt='Picture of handcrafted ceramics'
+        className="absolute inset-0 w-full h-165 object-cover z-0 opacity-35 hidden md:block"
+      />
+      <Image 
+        src="/hero-mobile.jpg"
+        width={560}
+        height={620}
+        alt='Picture of handcrafts'
+        className="absolute inset-0 w-full h-192 object-cover z-0 opacity-35 block md:hidden"
+      />
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Heading */}
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
