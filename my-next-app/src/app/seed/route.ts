@@ -14,7 +14,7 @@ const products = [
     price: 89,
     originalPrice: 120,
     onSale: true,
-    imageUrl: '/placeholder-images/vase.jpg',
+    imageUrl: '/items/vase.jpg',
     featured: true
   },
   {
@@ -25,7 +25,7 @@ const products = [
     reviews: 89,
     price: 145,
     onSale: false,
-    imageUrl: '/placeholder-images/jewelry.jpg',
+    imageUrl: '/items/jewelry.jpg',
     featured: true
   },
   {
@@ -36,7 +36,7 @@ const products = [
     reviews: 203,
     price: 198,
     onSale: false,
-    imageUrl: '/placeholder-images/textiles.jpg',
+    imageUrl: '/items/textiles.jpg',
     featured: true
   },
   {
@@ -47,7 +47,7 @@ const products = [
     reviews: 76,
     price: 425,
     onSale: false,
-    imageUrl: '/placeholder-images/table.jpg',
+    imageUrl: '/items/table.jpg',
     featured: true
   },
 ];
