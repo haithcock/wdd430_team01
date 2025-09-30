@@ -14,19 +14,35 @@ type ProductCardProps = {
     onSale: boolean;
     imageUrl: string;
   };
+  showAction?: boolean;
 };
 
-export default function ProductCard({ item }: ProductCardProps) {
+export default function ProductCard({ item, showAction = true }: ProductCardProps) {
+  const isValidHttpUrl = (value: string) => {
+    try {
+      const u = new URL(value);
+      return u.protocol === 'http:' || u.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
       <div className="relative">
-        <Image
-          src={item.imageUrl}
-          alt={item.name}
-          width={400}
-          height={400}
-          className="w-full h-56 object-cover"
-        />
+        {isValidHttpUrl(item.imageUrl) ? (
+          <Image
+            src={item.imageUrl}
+            alt={item.name}
+            width={400}
+            height={400}
+            className="w-full h-56 object-cover"
+          />
+        ) : (
+          <div className="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-500">
+            Image preview
+          </div>
+        )}
         {item.onSale && (
           <div className="absolute top-3 left-3 bg-gradient-to-r from-[#FB923C] to-[#EF4444] text-white text-xs font-bold px-3 py-1 rounded-full">
             Sale
@@ -51,9 +67,11 @@ export default function ProductCard({ item }: ProductCardProps) {
               </span>
             )}
           </div>
-            <Button>
+            {showAction && (
+              <Button>
                 Add to cart
-            </Button>
+              </Button>
+            )}
         </div>
       </div>
     </div>

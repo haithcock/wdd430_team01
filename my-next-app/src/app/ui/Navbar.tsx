@@ -7,6 +7,11 @@ import Link from "next/link";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const items = [
+    { label: "Catalog", href: "/#features" },
+    { label: "Sell", href: "/sell" },
+    { label: "Contact", href: "/#contact" },
+  ];
 
   return (
     <header className="w-full bg-white border-b fixed top-0 left-0 z-50">
@@ -22,14 +27,10 @@ export default function Navbar() {
       </Link>
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 text-gray-700 font-medium">
-          {["Features", "Learn More", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
-              className="transition hover:text-black"
-            >
-              {item}
-            </a>
+          {items.map((item) => (
+            <Link key={item.label} href={item.href} className="transition hover:text-black">
+              {item.label}
+            </Link>
           ))}
         </nav>
 
@@ -54,15 +55,15 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t px-6 py-4 flex flex-col gap-4 text-gray-700 font-medium">
-          {["Features", "Learn More", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
+          {items.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
               onClick={() => setMenuOpen(false)}
               className="hover:text-black transition"
             >
-              {item}
-            </a>
+              {item.label}
+            </Link>
           ))}
         </div>
       )}
