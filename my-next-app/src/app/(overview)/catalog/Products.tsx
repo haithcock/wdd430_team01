@@ -1,4 +1,4 @@
-import { getProducts } from "@/app/lib/data";
+import { getProducts } from "../../../../lib/data";
 import ProductCard from "@/app/ui/ProductCard";
 
 export default async function Products() {

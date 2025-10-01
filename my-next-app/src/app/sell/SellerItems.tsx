@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { products } from "@/lib/products";
+import { authOptions } from "../../../lib/auth";
+import { products } from "../../../lib/products";
 import ProductCard from "@/app/ui/ProductCard";
 
 export default async function SellerItems() {

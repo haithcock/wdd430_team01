@@ -11,14 +11,14 @@ export default function Hero() {
         width={1500}
         height={500}
         alt='Picture of handcrafted ceramics'
-        className="absolute inset-0 w-full h-165 object-cover z-0 opacity-35 hidden md:block"
+        className="absolute inset-0 w-full h-165 object-cover object-top z-0 opacity-35 hidden md:block"
       />
       <Image 
         src="/hero-mobile.jpg"
         width={560}
         height={620}
         alt='Picture of handcrafts'
-        className="absolute inset-0 w-full h-192 object-cover z-0 opacity-35 block md:hidden"
+        className="absolute inset-0 w-full h-192 object-cover object-top z-0 opacity-35 block md:hidden"
       />
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Heading */}

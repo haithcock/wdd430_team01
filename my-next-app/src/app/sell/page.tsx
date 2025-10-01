@@ -102,7 +102,7 @@ export default function SellPage() {
         <div className="text-sm text-gray-600 flex items-center gap-3">
           {status === "authenticated" ? (
             <>
-              <span>Signed in as {session?.user?.name ?? session?.user?.email}</span>
+              <span>Logged in as {session?.user?.name ?? session?.user?.email}</span>
               <button className="underline" onClick={() => signOut({ callbackUrl: "/" })}>
                 Sign out
               </button>

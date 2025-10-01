@@ -2,7 +2,18 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
-  function middleware() {
+  function middleware(req) {
+    const { pathname, origin } = req.nextUrl;
+    const protectedPaths = ["/sell", "/api/products"];
+    const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
+    // @ts-expect-error token is injected by withAuth
+    const token = req.nextauth?.token;
+    if (isProtected && !token) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/auth/signin";
+      url.searchParams.set("callbackUrl", origin + pathname);
+      return NextResponse.redirect(url);
+    }
     return NextResponse.next();
   },
   {

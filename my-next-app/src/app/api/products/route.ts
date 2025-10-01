@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { products } from "@/lib/products";
+import { authOptions } from "../../../../lib/auth";
+import { products } from "../../../../lib/products";
 
 const productSchema = z.object({
   category: z.string().min(1),

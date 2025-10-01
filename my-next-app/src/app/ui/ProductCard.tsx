@@ -26,11 +26,12 @@ export default function ProductCard({ item, showAction = true }: ProductCardProp
       return false;
     }
   };
+  const isLocalPublicPath = (value: string) => typeof value === 'string' && value.startsWith('/');
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
       <div className="relative">
-        {isValidHttpUrl(item.imageUrl) ? (
+        {isValidHttpUrl(item.imageUrl) || isLocalPublicPath(item.imageUrl) ? (
           <Image
             src={item.imageUrl}
             alt={item.name}

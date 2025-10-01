@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { inter } from './lib/fonts';
+import { inter } from '../../lib/fonts';
 import "./global.css";
-<<<<<<< HEAD
 import Navbar from "@/app/ui/Navbar";
 import Footer from "@/app/ui/Footer";
-=======
 import Providers from "./providers";
->>>>>>> bd6a292 (WIP: local changes before pulling)
 
 
 export const metadata: Metadata = {
@@ -25,13 +22,11 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
     </head>
       <body className={`${inter.className} antialiased`}>
-<<<<<<< HEAD
-        <Navbar />
-        {children}
-        <Footer />
-=======
-        <Providers>{children}</Providers>
->>>>>>> bd6a292 (WIP: local changes before pulling)
+        <Providers>
+          <Navbar />
+          <div className="pt-15">{children}</div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

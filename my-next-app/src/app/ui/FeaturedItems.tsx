@@ -1,7 +1,7 @@
 import Button from '@/app/ui/Button';
 import ProductCard from '@/app/ui/ProductCard';
 import Link from 'next/link';
-import { getFeaturedProducts } from '../lib/data';
+import { getFeaturedProducts } from '../../../lib/data';
 
 
 export default async function FeaturedItems() {
