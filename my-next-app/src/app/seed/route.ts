@@ -4,7 +4,20 @@ import { createProduct } from '../../../lib/actions';
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 
-const products = [
+type SeedProduct = {
+  category: string;
+  name: string;
+  artisan: string;
+  rating: number;
+  reviews: number;
+  price: number;
+  originalPrice?: number;
+  onSale: boolean;
+  imageUrl: string;
+  featured: boolean;
+};
+
+const products: SeedProduct[] = [
   {
     category: 'Pottery',
     name: 'Hand-Thrown Ceramic Vase',
@@ -86,7 +99,8 @@ export async function GET() {
     ]);
 
     return Response.json({ message: 'Database seeded successfully' });
-  } catch (error) {
-    return Response.json({ error }, { status: 500 });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return Response.json({ error: message }, { status: 500 });
   }
 }

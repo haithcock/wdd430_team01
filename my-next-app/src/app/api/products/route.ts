@@ -38,7 +38,9 @@ export async function POST(req: Request) {
     originalPrice: body.onSale ? body.originalPrice : undefined,
     onSale: body.onSale,
     imageUrl: body.imageUrl,
-    sellerId: (session.user as any).id ?? "",
+    sellerId: (session.user && typeof (session.user as { id?: string }).id === "string"
+      ? (session.user as { id?: string }).id!
+      : ""),
   };
   products.push(newProduct);
   return NextResponse.json(newProduct, { status: 201 });
