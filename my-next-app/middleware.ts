@@ -6,7 +6,6 @@ export default withAuth(
     const { pathname, origin } = req.nextUrl;
     const protectedPaths = ["/sell", "/api/products"];
     const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
-    // @ts-expect-error token is injected by withAuth
     const token = req.nextauth?.token;
     if (isProtected && !token) {
       const url = req.nextUrl.clone();
