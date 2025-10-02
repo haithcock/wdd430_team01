@@ -10,7 +10,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { data: session } = useSession();
   const items = [
-    { label: "Catalog", href: "/#features" },
+    { label: "Catalog", href: "/catalog" },
     { label: "Sell", href: "/sell" },
     { label: "Contact", href: "/#contact" },
   ];

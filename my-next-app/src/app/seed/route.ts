@@ -32,7 +32,7 @@ const products: SeedProduct[] = [
   },
   {
     category: 'Jewelry',
-    name: 'Sterling Silver Pendant...',
+    name: 'Sterling Silver Pendant Necklace',
     artisan: 'by Marcus Rivera',
     rating: 5,
     reviews: 89,
@@ -43,7 +43,7 @@ const products: SeedProduct[] = [
   },
   {
     category: 'Textiles',
-    name: 'Handwoven Wool Throw...',
+    name: 'Handwoven Wool Throw Blanket',
     artisan: 'by Emma Thompson',
     rating: 4.8,
     reviews: 203,
@@ -63,6 +63,74 @@ const products: SeedProduct[] = [
     imageUrl: '/items/table.jpg',
     featured: true
   },
+  {
+    category: 'Glass Art',
+    name: 'Blown Glass Vase',
+    artisan: 'by Laura Kim',
+    rating: 4.7,
+    reviews: 64,
+    price: 120,
+    originalPrice: 150,
+    onSale: true,
+    imageUrl: '/items/glass-vase.jpg',
+    featured: false
+  },
+  {
+    category: 'Metalwork',
+    name: 'Hand-Forged Iron Candle Holder',
+    artisan: 'by Anthony Garcia',
+    rating: 4.8,
+    reviews: 98,
+    price: 85,
+    onSale: false,
+    imageUrl: '/items/candle-holder.jpg',
+    featured: false
+  },
+  {
+    category: 'Pottery',
+    name: 'Glazed Ceramic Bowl Set',
+    artisan: 'by Laura Kim',
+    rating: 4.7,
+    reviews: 64,
+    price: 59,
+    originalPrice: 80,
+    onSale: true,
+    imageUrl: '/items/bowl.jpg',
+    featured: false
+  },
+  {
+    category: 'Jewelry',
+    name: 'Handcrafted Beaded Bracelet',
+    artisan: 'by Anthony Garcia',
+    rating: 4.6,
+    reviews: 112,
+    price: 75,
+    onSale: false,
+    imageUrl: '/items/bracelet.jpg',
+    featured: false
+  },
+  {
+    category: 'Textiles',
+    name: 'Cotton Embroidered Pillow Cover',
+    artisan: 'by Sophia Lee',
+    rating: 4.9,
+    reviews: 58,
+    price: 35,
+    onSale: true,
+    imageUrl: '/items/pillow.jpg',
+    featured: false
+  },
+  {
+    category: 'Woodworking',
+    name: 'Handcrafted Wooden Cutting Board',
+    artisan: 'by Michael Nguyen',
+    rating: 5,
+    reviews: 97,
+    price: 55,
+    onSale: false,
+    imageUrl: '/items/cutting-board.jpg',
+    featured: false
+  }
 ];
 async function seedProducts() {
   await sql`DROP TABLE IF EXISTS products`;
