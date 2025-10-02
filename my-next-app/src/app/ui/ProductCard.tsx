@@ -1,46 +1,39 @@
 import Button from './Button';
 import Image from 'next/image';
 
-type ProductItem = {
-  id: number;
-  category: string;
-  name: string;
-  artisan: string;
-  rating: number;
-  reviews: number;
-  price: number;
-  imageUrl: string;
-} & (
-  | { onSale: true; originalPrice: number }
-  | { onSale: false; originalPrice?: number }
-);
-
 type ProductCardProps = {
-  item: ProductItem;
+  item: {
+    id: number;
+    category: string;
+    name: string;
+    artisan: string;
+    rating: number;
+    reviews: number;
+    price: number;
+    originalPrice?: number;
+    onSale: boolean;
+    imageUrl: string;
+  };
   showAction?: boolean;
 };
 
 export default function ProductCard({ item, showAction = true }: ProductCardProps) {
-  const getImageSource = (value: string): string | null => {
+  const isValidHttpUrl = (value: string) => {
     try {
-      if (value.startsWith('/')) {
-        return value; // Local public path
-      }
       const u = new URL(value);
-      return u.protocol === 'http:' || u.protocol === 'https:' ? value : null;
+      return u.protocol === 'http:' || u.protocol === 'https:';
     } catch {
-      return null;
+      return false;
     }
   };
-
-  const imageSrc = getImageSource(item.imageUrl);
+  const isLocalPublicPath = (value: string) => typeof value === 'string' && value.startsWith('/');
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
       <div className="relative">
-        {imageSrc ? (
+        {isValidHttpUrl(item.imageUrl) || isLocalPublicPath(item.imageUrl) ? (
           <Image
-            src={imageSrc}
+            src={item.imageUrl}
             alt={item.name}
             width={400}
             height={400}
@@ -69,15 +62,17 @@ export default function ProductCard({ item, showAction = true }: ProductCardProp
         <div className="flex items-center justify-between pt-2">
           <div>
             <span className="text-2xl font-bold text-gray-900">${item.price}</span>
-            {item.onSale && (
+            {item.onSale && item.originalPrice && (
               <span className="text-sm text-gray-500 line-through ml-2">
                 ${item.originalPrice}
               </span>
             )}
           </div>
-          {showAction && (
-            <Button>Add to cart</Button>
-          )}
+            {showAction && (
+              <Button>
+                Add to cart
+              </Button>
+            )}
         </div>
       </div>
     </div>
