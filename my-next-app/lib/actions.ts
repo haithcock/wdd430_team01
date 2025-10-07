@@ -1,5 +1,6 @@
 "use server"
 
+import { ProductItem } from "@/app/ui/ProductCard";
 import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
@@ -16,6 +17,7 @@ type ProductTypes = {
     imageUrl: string;
     featured?: boolean;
 };
+
 export async function createProduct(data: ProductTypes) {
   return await sql`
     INSERT INTO products (category, name, artisan, rating, reviews, price, original_price, on_sale, image_url, featured)
