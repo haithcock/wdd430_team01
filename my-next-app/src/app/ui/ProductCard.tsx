@@ -24,7 +24,7 @@ export default function ProductCard({ item, showAction = true }: ProductCardProp
     try {
       if (value.startsWith('/')) return value; // Local public path
       const u = new URL(value);
-      return u.protocol === 'http:' || u.protocol === 'https:' ? value : null;
+      return u.protocol === 'http:' || u.protocol === 'https:' || u.protocol === 'blob:' ? value : null;
     } catch {
       return null;
     }

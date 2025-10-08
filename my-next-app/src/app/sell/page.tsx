@@ -45,6 +45,7 @@ export default function SellPage() {
   });
   const [file, setFile] = React.useState<File | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [previewUrl, setPreviewUrl] = React.useState<string>("");
   const [myProducts, setMyProducts] = React.useState<DbProduct[]>([]);
   const [loadingMyProducts, setLoadingMyProducts] = React.useState(false);
 
@@ -77,7 +78,7 @@ export default function SellPage() {
     price: Number(form.price) || 0,
     onSale: form.onSale,
     originalPrice: form.onSale ? form.originalPrice ?? 0 : undefined,
-    imageUrl: "",
+    imageUrl: previewUrl,
   };
 
   async function onSubmit(e: React.FormEvent) {
@@ -123,6 +124,7 @@ export default function SellPage() {
       onSale: false,
     });
     setFile(null);
+    setPreviewUrl("");
     setErrors({});
     if (fileInputRef.current) fileInputRef.current.value = ""; // clear file input
 
@@ -150,6 +152,29 @@ export default function SellPage() {
       setMyProducts([]);
     }
   }, [status]);
+
+  // Prefill artisan from authenticated user to avoid empty values
+  React.useEffect(() => {
+    if (status === "authenticated") {
+      setForm((f) => ({
+        ...f,
+        artisan: f.artisan || (session?.user?.name ?? ""),
+      }));
+    } else {
+      setForm((f) => ({ ...f, artisan: "" }));
+    }
+  }, [status, session?.user?.name]);
+
+  // Create and clean up preview URL when file changes
+  React.useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setPreviewUrl("");
+    }
+  }, [file]);
 
   async function handleDelete(id: number) {
     if (!confirm("Delete this product?")) return;
