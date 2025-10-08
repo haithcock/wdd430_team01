@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../lib/auth";
 import postgres from "postgres";
@@ -7,15 +7,16 @@ import { del as delBlob } from "@vercel/blob";
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const idNum = Number(params.id);
+  const { id } = await context.params;
+  const idNum = Number(id);
   if (!Number.isFinite(idNum)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
   }
