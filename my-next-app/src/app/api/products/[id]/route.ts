@@ -6,16 +6,22 @@ import { del as delBlob } from "@vercel/blob";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
+export const runtime = 'nodejs';
+
 export async function DELETE(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: any
 ) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { id } = await context.params;
+  const maybeParams = context?.params;
+  const params = (maybeParams && typeof maybeParams.then === 'function')
+    ? await maybeParams
+    : maybeParams;
+  const { id } = params ?? {};
   const idNum = Number(id);
   if (!Number.isFinite(idNum)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });

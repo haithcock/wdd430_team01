@@ -1,7 +1,7 @@
 import postgres from "postgres";
 
 // for search results
-import { ProductItem } from "@/app/ui/ProductCard";
+import type { ProductItem } from "@/app/ui/ProductCard";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
