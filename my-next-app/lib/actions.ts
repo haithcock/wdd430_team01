@@ -1,6 +1,5 @@
 "use server"
 
-import { ProductItem } from "@/app/ui/ProductCard";
 import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
