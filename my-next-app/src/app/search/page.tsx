@@ -63,7 +63,7 @@ async function SearchResults({ query, currentPage }: { query: string, currentPag
       <div className="text-center py-20 bg-white rounded-xl shadow-lg border border-gray-100">
         <MagnifyingGlassIcon className="w-12 h-12 mx-auto text-gray-400 mb-4" />
         <p className="text-2xl font-medium text-gray-700">
-          No handcrafted products found for "<span className="text-[#EF4444]">{query}</span>".
+          No handcrafted products found for &quot;<span className="text-[#EF4444]">{query}</span>&quot;.
         </p>
         <p className="text-gray-500 mt-2">
           Try simplifying your search term or checking your spelling.
