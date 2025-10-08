@@ -10,17 +10,6 @@ David Park
 Michael Ngyuen
 */
 
-/*
-List of seller names:
-
-
-
-Emma Thompson
-Sophia Lee
-David Park
-Michael Ngyuen
-*/
-
 export const sellers = [
   {
     id: 1,

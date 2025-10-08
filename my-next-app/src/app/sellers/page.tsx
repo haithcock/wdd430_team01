@@ -10,7 +10,7 @@ export default function SellersPage() {
           <li key={seller.id} className="border rounded-lg p-4 shadow">
             <h2 className="text-xl font-semibold">{seller.name}</h2>
             <p>Rating: {seller.rating}</p>
-            <p>Products: {seller.products}</p>
+            <p>Products: {Array.isArray(seller.products) ? seller.products.join(", ") : seller.products}</p>
             <p>Location: {seller.location}</p>
           </li>
         ))}
