@@ -116,7 +116,7 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
         <p className="text-xl text-gray-600 mb-6">
           Viewing results for: 
           <span className="font-semibold text-[#EF4444] ml-2">
-            "{displayQuery}"
+            &quot;{displayQuery}&quot;
           </span>
         </p>
         
