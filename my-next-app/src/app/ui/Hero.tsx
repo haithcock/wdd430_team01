@@ -1,9 +1,40 @@
+'use client'; 
+
 import Button from '@/app/ui/Button';
 import Search from '@/app/ui/Search';
 import Image from 'next/image';
-
+import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 export default function Hero() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Initialize state with the current query from the URL, if any
+  const initialQuery = searchParams.get('query')?.toString() || '';
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
+
+  /**
+   * Handles the form submission (when the button is clicked or Enter is pressed).
+   * This is the ONLY place navigation should occur.
+   */
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Stop the default form reload behavior
+    const trimmedTerm = searchQuery.trim();
+    
+    if (!trimmedTerm) return; // Prevent navigation on empty search
+
+    const params = new URLSearchParams();
+    params.set('page', '1'); // Always reset pagination on a new search
+    params.set('query', trimmedTerm);
+    
+    // Navigate to the dedicated /search route
+    router.push(`/search?${params.toString()}`);
+  };
+
+  // --- Component Render ---
+  
   return (
     <section className="flex flex-col items-center justify-center flex-1 text-center px-6 py-20 bg-gradient-to-br from-white via-orange-100 to-red-50 text-gray-900">
       <Image
@@ -11,14 +42,14 @@ export default function Hero() {
         width={1500}
         height={500}
         alt='Picture of handcrafted ceramics'
-        className="absolute inset-0 w-full h-165 object-cover object-top z-0 opacity-35 hidden md:block"
+        className="absolute inset-0 w-full h-[42rem] object-cover object-top z-0 opacity-35 hidden md:block"
       />
       <Image 
         src="/hero-mobile.jpg"
         width={560}
         height={620}
         alt='Picture of handcrafts'
-        className="absolute inset-0 w-full h-192 object-cover object-top z-0 opacity-35 block md:hidden"
+        className="absolute inset-0 w-full h-[48rem] object-cover object-top z-0 opacity-35 block md:hidden"
       />
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Heading */}
@@ -35,10 +66,26 @@ export default function Hero() {
         </p>
 
         {/* Search bar with button */}
-        <div className="flex w-full max-w-xl mx-auto mb-16">
-          <Search placeholder="Search for handcrafted items..." />
-          <Button className="rounded-l-none">Explore</Button>
-        </div>
+        <form onSubmit={handleSubmit} className="flex w-full max-w-xl mx-auto mb-16">
+          
+          {/* Search is now a controlled component. onInputChange updates the state, 
+              but does NOT trigger navigation.
+          */}
+          <Search 
+            placeholder="Search for handcrafted items..." 
+            currentQuery={searchQuery} // State value passed down
+            onInputChange={setSearchQuery} // State setter passed down
+          />
+          
+          {/* Button submits the form */}
+          <Button 
+            className="rounded-l-none h-auto py-[9px] px-6 text-base"
+            type="submit" // Key change: type="submit" fires the form's onSubmit handler
+            disabled={!searchQuery.trim()} // Disable if the input is empty
+          >
+            Explore
+          </Button>
+        </form>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">

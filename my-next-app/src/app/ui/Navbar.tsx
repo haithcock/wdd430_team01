@@ -12,7 +12,7 @@ export default function Navbar() {
   const items = [
     { label: "Catalog", href: "/catalog" },
     { label: "Sell", href: "/sell" },
-    { label: "Sellers", href: "/sellers" },
+    { label: "Seller Profiles", href: "/sellers" },
     { label: "Contact", href: "/#contact" },
   ];
 
