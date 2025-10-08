@@ -1,24 +1,11 @@
 import postgres from "postgres";
 
+// for search results
 import { ProductItem } from "@/app/ui/ProductCard";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 const ITEMS_PER_PAGE = 12;
-
-type ProductFromDB = {
-    id: number;
-    category: string;
-    name: string;
-    artisan: string;
-    rating: number;
-    reviews: number;
-    price: string; 
-    original_price: string | null;
-    on_sale: boolean;
-    image_url: string;
-};
-
 
 export async function fetchFilteredProducts(
     query: string, 
@@ -28,6 +15,7 @@ export async function fetchFilteredProducts(
     const searchPattern = `%${query}%`; 
 
     try {
+        // 1. Query to count total matching products
         const countPromise = sql`
             SELECT COUNT(*) 
             FROM products
@@ -37,8 +25,8 @@ export async function fetchFilteredProducts(
                 artisan ILIKE ${searchPattern}
         `;
 
-        //    FIX: Replaced 'any[]' with the specific 'ProductFromDB[]' type.
-        const productsPromise = sql<ProductFromDB[]>`
+        // 2. Query to fetch the paginated, filtered products
+        const productsPromise = sql<any[]>`
             SELECT 
                 product_id as id,
                 category, 
@@ -65,14 +53,14 @@ export async function fetchFilteredProducts(
         const totalProducts = Number(countResult[0].count);
         const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
 
-		
+        // Map column names from DB structure to ProductItem type
         const products: ProductItem[] = productsResult.map(p => ({
             id: Number(p.id),
             category: p.category,
             name: p.name,
             artisan: p.artisan,
-            rating: Number(p.rating),
-            reviews: Number(p.reviews),
+            rating: p.rating,
+            reviews: p.reviews,
             price: p.price,
             originalPrice: p.original_price ?? undefined,
             onSale: p.on_sale,
