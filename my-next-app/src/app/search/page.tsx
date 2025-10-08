@@ -13,7 +13,7 @@ interface SearchPageProps {
 
 // --- Loading Skeleton Component ---
 // Displays a loading state while the main data is being fetched.
-function SearchResultsSkeleton() {
+async function SearchResultsSkeleton() {
     return (
         <div className="animate-pulse">
             <h2 className="text-xl font-medium text-gray-600 mb-4">
@@ -53,10 +53,10 @@ function SearchResultsSkeleton() {
 // --- Main Data Fetching Component ---
 // This async component fetches and renders the actual data. 
 async function SearchResults({ query, currentPage }: { query: string, currentPage: number }) {
-  
+ 
   // 1. Fetch data from the database (lib/data.ts)
   const { products, totalPages } = await fetchFilteredProducts(query, currentPage);
-  
+ 
   // 2. Handle zero results
   if (products.length === 0) {
     return (
@@ -96,11 +96,11 @@ async function SearchResults({ query, currentPage }: { query: string, currentPag
 
 
 // --- Main Search Page (Server Component) ---
-export default  function SearchPage({ searchParams }: SearchPageProps) {
+export default function SearchPage({ searchParams }: SearchPageProps) {
   // Extract and validate parameters from the URL
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  
+ 
   // Capitalize the query for better display in the header
   const capitalizedQuery = query.charAt(0).toUpperCase() + query.slice(1);
   const displayQuery = query ? capitalizedQuery : 'All Products';
