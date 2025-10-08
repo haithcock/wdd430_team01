@@ -26,7 +26,7 @@ export async function fetchFilteredProducts(
         `;
 
         // 2. Query to fetch the paginated, filtered products
-        const productsPromise = sql<any[]>`
+        const productsPromise = sql`
             SELECT 
                 product_id as id,
                 category, 
@@ -54,7 +54,7 @@ export async function fetchFilteredProducts(
         const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
 
         // Map column names from DB structure to ProductItem type
-        const products: ProductItem[] = productsResult.map(p => ({
+        const products: ProductItem[] = (productsResult as any[]).map((p: any) => ({
             id: Number(p.id),
             category: p.category,
             name: p.name,
