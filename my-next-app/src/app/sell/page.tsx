@@ -17,6 +17,19 @@ type ProductItem = {
   originalPrice?: number;
 };
 
+type DbProduct = {
+  product_id: number;
+  category: string;
+  name: string;
+  artisan: string;
+  rating: number;
+  reviews: number;
+  price: number;
+  original_price: number | null;
+  on_sale: boolean;
+  image_url: string;
+};
+
 export default function SellPage() {
   const { data: session, status } = useSession();
 
@@ -29,33 +42,27 @@ export default function SellPage() {
     price: "",
     originalPrice: undefined as number | undefined,
     onSale: false,
-    imageUrl: "",
   });
+  const [file, setFile] = React.useState<File | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [myProducts, setMyProducts] = React.useState<DbProduct[]>([]);
+  const [loadingMyProducts, setLoadingMyProducts] = React.useState(false);
 
   const [errors, setErrors] = React.useState<{
     name?: string;
     category?: string;
     price?: string;
-    imageUrl?: string;
+    file?: string;
   }>({});
 
-  const isValidHttpUrl = (value: string) => {
-    if (!value) return false;
-    try {
-      const u = new URL(value);
-      return u.protocol === "http:" || u.protocol === "https:";
-    } catch {
-      return false;
-    }
-  };
 
   function validate() {
     const newErrors: typeof errors = {};
     if (!form.name.trim()) newErrors.name = "Name is required.";
     if (!form.category.trim()) newErrors.category = "Category is required.";
     if (!form.price || Number(form.price) <= 0) newErrors.price = "Price must be greater than 0.";
-    if (!form.imageUrl.trim() || !isValidHttpUrl(form.imageUrl))
-      newErrors.imageUrl = "Enter a valid http(s) image URL.";
+    // Require an image file upload
+    if (!file) newErrors.file = "Please upload an image file.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -70,17 +77,32 @@ export default function SellPage() {
     price: Number(form.price) || 0,
     onSale: form.onSale,
     originalPrice: form.onSale ? form.originalPrice ?? 0 : undefined,
-    imageUrl: form.imageUrl || "",
+    imageUrl: "",
   };
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
 
+    // If a file is selected, upload to Vercel Blob to get a public URL
+    let imageUrlToUse = "";
+    if (file) {
+      const fd = new FormData();
+      fd.append("file", file);
+      const uploadRes = await fetch("/api/upload", { method: "POST", body: fd });
+      if (!uploadRes.ok) {
+        const msg = await uploadRes.text();
+        alert(`Upload failed: ${msg}`);
+        return;
+      }
+      const uploaded = (await uploadRes.json()) as { url: string };
+      imageUrlToUse = uploaded.url;
+    }
+
     const res = await fetch("/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, price: Number(form.price) }),
+      body: JSON.stringify({ ...form, imageUrl: imageUrlToUse, price: Number(form.price) }),
     });
 
     if (!res.ok) {
@@ -99,9 +121,45 @@ export default function SellPage() {
       price: "",
       originalPrice: undefined,
       onSale: false,
-      imageUrl: "",
     });
+    setFile(null);
     setErrors({});
+    if (fileInputRef.current) fileInputRef.current.value = ""; // clear file input
+
+    // refresh list
+    void loadMyProducts();
+  }
+
+  async function loadMyProducts() {
+    if (status !== "authenticated") return;
+    try {
+      setLoadingMyProducts(true);
+      const res = await fetch("/api/products?mine=1");
+      if (!res.ok) return;
+      const data = (await res.json()) as DbProduct[];
+      setMyProducts(data);
+    } finally {
+      setLoadingMyProducts(false);
+    }
+  }
+
+  React.useEffect(() => {
+    if (status === "authenticated") {
+      void loadMyProducts();
+    } else {
+      setMyProducts([]);
+    }
+  }, [status]);
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this product?")) return;
+    const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+    if (!res.ok && res.status !== 204) {
+      const msg = await res.text();
+      alert(`Failed to delete: ${msg}`);
+      return;
+    }
+    await loadMyProducts();
   }
 
   return (
@@ -225,16 +283,20 @@ export default function SellPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-600">Image URL</label>
+              <label className="block text-sm font-medium mb-1 text-gray-600">Upload an image</label>
               <input
-                className={`w-full border rounded-md px-3 py-2 text-black placeholder-gray-400 ${
-                  errors.imageUrl ? "border-red-500" : ""
-                }`}
-                value={form.imageUrl}
-                onChange={(e) => setForm((f) => ({ ...f, imageUrl: e.target.value }))}
-                placeholder="https://..."
+                type="file"
+                accept="image/*"
+                className={`w-full border rounded-md px-3 py-2 text-black ${errors.file ? "border-red-500" : ""}`}
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                ref={fileInputRef}
               />
-              {errors.imageUrl && <p className="text-red-600 text-sm mt-1">{errors.imageUrl}</p>}
+              {errors.file && <p className="text-red-600 text-sm mt-1">{errors.file}</p>}
+              {/* filename/placeholder line */}
+              <p className={`text-sm mt-1 ${file ? "text-black" : "text-gray-400"}`}>
+                {file ? file.name : "Choose an image file..."}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Upload an image file (required). We will store it and use its URL automatically.</p>
             </div>
 
             <Button type="submit" className="w-full">
@@ -252,6 +314,49 @@ export default function SellPage() {
             <ProductCard item={itemForPreview} showAction={false} />
           </div>
         </div>
+
+        {/* My Products */}
+        {status === "authenticated" && (
+          <section className="mt-10">
+            <h2 className="text-lg font-extrabold mb-4">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FB923C] to-[#EF4444]">
+                My Products
+              </span>
+            </h2>
+            {loadingMyProducts ? (
+              <p className="text-gray-500">Loading...</p>
+            ) : myProducts.length === 0 ? (
+              <p className="text-gray-500">No products yet.</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {myProducts.map((p) => (
+                  <div key={p.product_id} className="relative border rounded-lg p-2">
+                    <ProductCard
+                      item={{
+                        id: p.product_id,
+                        category: p.category,
+                        name: p.name,
+                        artisan: p.artisan,
+                        rating: p.rating,
+                        reviews: p.reviews,
+                        price: p.price,
+                        originalPrice: p.original_price ?? undefined,
+                        onSale: p.on_sale,
+                        imageUrl: p.image_url,
+                      }}
+                      showAction={false}
+                    />
+                    <div className="mt-2">
+                      <Button type="button" onClick={() => handleDelete(p.product_id)} className="w-full bg-red-600 hover:bg-red-700">
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
       </div>
     </main>
   );
