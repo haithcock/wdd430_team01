@@ -26,7 +26,7 @@ export async function fetchFilteredProducts(
         `;
 
         // 2. Query to fetch the paginated, filtered products
-        const productsPromise = sql`
+        const productsPromise = sql<{id: string, category: string, name: string, artisan: string, rating: string, reviews: string, price: string, original_price: string | undefined | null, on_sale: boolean, image_url: string}[]>`
             SELECT 
                 product_id as id,
                 category, 
@@ -54,15 +54,15 @@ export async function fetchFilteredProducts(
         const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
 
         // Map column names from DB structure to ProductItem type
-        const products: ProductItem[] = (productsResult as any[]).map((p: any) => ({
-            id: Number(p.id),
+        const products: ProductItem[] = productsResult.map(p => ({
+            id: parseInt(p.id),
             category: p.category,
             name: p.name,
             artisan: p.artisan,
-            rating: p.rating,
-            reviews: p.reviews,
-            price: p.price,
-            originalPrice: p.original_price ?? undefined,
+            rating: parseFloat(p.rating),
+            reviews: parseInt(p.reviews),
+            price: parseFloat(p.price),
+            originalPrice: p.original_price ? parseFloat(p.original_price) : undefined,
             onSale: p.on_sale,
             imageUrl: p.image_url,
         }));

@@ -96,10 +96,11 @@ async function SearchResults({ query, currentPage }: { query: string, currentPag
 
 
 // --- Main Search Page (Server Component) ---
-export default function SearchPage({ searchParams }: SearchPageProps) {
+export default async function SearchPage({ searchParams }: SearchPageProps) {
   // Extract and validate parameters from the URL
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
+  const params = await searchParams;
+  const query =  params?.query || '';
+  const currentPage = Number(params?.page) || 1;
  
   // Capitalize the query for better display in the header
   const capitalizedQuery = query.charAt(0).toUpperCase() + query.slice(1);
