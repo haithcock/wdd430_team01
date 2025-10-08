@@ -4,8 +4,6 @@ import "./global.css";
 import Navbar from "@/app/ui/Navbar";
 import Footer from "@/app/ui/Footer";
 import Providers from "./providers";
-import Search from "./ui/Search";
-
 
 export const metadata: Metadata = {
   title: "Handicrafted Haven",
