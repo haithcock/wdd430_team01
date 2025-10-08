@@ -1,7 +1,7 @@
 import postgres from "postgres";
 
 // for search results
-import { ProductItem } from "@/app/ui/ProductCard";
+import type { ProductItem } from "@/app/ui/ProductCard";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -80,30 +80,28 @@ export async function fetchFilteredProducts(
 
 
 
-export async function getProducts() {//todo join artisan/creator
+export async function getProducts() {
   const data = await sql`
-    SELECT product_id, category, name, artisan, rating, price, original_price, on_sale, image_url
+    SELECT product_id, category, name, artisan, rating, reviews, price, original_price, on_sale, image_url
     FROM products
   `;
 
-	return data;
+  return data;
 }
 
-export async function getFeaturedProducts() {//todo join artisan/creator
+export async function getFeaturedProducts() {
   const data = await sql`
-    SELECT product_id, category, name, artisan, rating, price, original_price, on_sale, image_url
+    SELECT product_id, category, name, artisan, rating, reviews, price, original_price, on_sale, image_url
     FROM products
     WHERE featured = TRUE
   `;
 
-	return data;
+  return data;
 }
 
 export async function getProductsByCategory(category: string) {
-  // Capitalize first letter
-
   const data = await sql`
-    SELECT product_id, category, name, artisan, rating, price, original_price, on_sale, image_url
+    SELECT product_id, category, name, artisan, rating, reviews, price, original_price, on_sale, image_url
     FROM products
     WHERE category = ${category}
   `;

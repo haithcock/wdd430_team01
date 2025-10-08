@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
-import { products } from "../../../../lib/products";
+import { createProduct } from "../../../../lib/actions";
+import postgres from "postgres";
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 const productSchema = z.object({
   category: z.string().min(1),
@@ -27,8 +30,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ errors: parsed.error.flatten() }, { status: 400 });
   }
   const body = parsed.data;
-  const newProduct = {
-    id: products.length + 1,
+  const dbRow = await createProduct({
     category: body.category,
     name: body.name,
     artisan: body.artisan ?? (session.user.name ?? "Unknown"),
@@ -38,10 +40,38 @@ export async function POST(req: Request) {
     originalPrice: body.onSale ? body.originalPrice : undefined,
     onSale: body.onSale,
     imageUrl: body.imageUrl,
-    sellerId: (session.user && typeof (session.user as { id?: string }).id === "string"
-      ? (session.user as { id?: string }).id!
-      : ""),
-  };
-  products.push(newProduct);
-  return NextResponse.json(newProduct, { status: 201 });
+    featured: false,
+  });
+
+  // postgres package returns an array-like result; pick the inserted row
+  const inserted = Array.isArray(dbRow) ? dbRow[0] : dbRow;
+  return NextResponse.json(inserted, { status: 201 });
 }
+
+export async function GET(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+  const { searchParams } = new URL(req.url);
+  const mine = searchParams.get("mine");
+
+  if (mine === "1") {
+    const artisan = session.user.name ?? "";
+    const data = await sql`
+      SELECT product_id, category, name, artisan, rating, reviews, price, original_price, on_sale, image_url
+      FROM products
+      WHERE artisan = ${artisan}
+      ORDER BY product_id DESC
+    `;
+    return NextResponse.json(data);
+  }
+
+  const data = await sql`
+    SELECT product_id, category, name, artisan, rating, reviews, price, original_price, on_sale, image_url
+    FROM products
+    ORDER BY product_id DESC
+  `;
+  return NextResponse.json(data);
+}
+

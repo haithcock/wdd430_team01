@@ -1,4 +1,5 @@
 import { getProducts, getProductsByCategory } from "../../../../lib/data";
+import { unstable_noStore as noStore } from "next/cache";
 import ProductCard from "@/app/ui/ProductCard";
 
 interface ProductProps {
@@ -20,6 +21,7 @@ interface Product {
 }
 
 export default async function Products({ category }: ProductProps) {
+  noStore();
   const products = category ? await getProductsByCategory(category) : await getProducts();
   console.log(products)
 
