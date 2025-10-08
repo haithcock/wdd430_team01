@@ -13,7 +13,7 @@ export default function SearchResults({ items, query }: SearchResultsProps) {
   if (query && items.length === 0) {
     return (
       <div className="py-20 text-center bg-gray-50 rounded-xl border border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">No results found for "{query}"</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-2">No results found for &quot;{query}&quot;</h2>
         <p className="text-gray-600">Try adjusting your search terms or check our categories.</p>
       </div>
     );
