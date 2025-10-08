@@ -5,7 +5,6 @@ import Navbar from "@/app/ui/Navbar";
 import Footer from "@/app/ui/Footer";
 import Providers from "./providers";
 
-
 export const metadata: Metadata = {
   title: "Handicrafted Haven",
   description: "Handicrafted Haven is a curated space for unique, handmade creations — where artistry, tradition, and modern design meet to bring warmth and authenticity to your home and lifestyle.",

@@ -16,6 +16,7 @@ type ProductTypes = {
     imageUrl: string;
     featured?: boolean;
 };
+
 export async function createProduct(data: ProductTypes) {
   return await sql`
     INSERT INTO products (category, name, artisan, rating, reviews, price, original_price, on_sale, image_url, featured)
