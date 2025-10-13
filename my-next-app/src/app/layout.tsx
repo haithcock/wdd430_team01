@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Handicrafted Haven is a curated space for unique, handmade creations — where artistry, tradition, and modern design meet to bring warmth and authenticity to your home and lifestyle.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

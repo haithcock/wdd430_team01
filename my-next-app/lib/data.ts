@@ -154,9 +154,29 @@ export async function getProductsByCategory(category: string) {
 
   return data;
 }
+export async function getFilteredProducts(categories: string[], ratings: number[]) {
+  const data = await sql`
+    SELECT 
+    p.product_id,
+    c.title AS category,
+    p.name,
+    p.artisan,
+    p.rating,
+    p.reviews,
+    p.price,
+    p.original_price,
+    p.on_sale,
+    p.image_url
+    FROM products p
+    JOIN categories c ON p.category_id = c.id
+    WHERE c.title = ANY(${sql.array([' ', ...categories], 25)})
+    OR p.rating = ANY(${sql.array([0, ...ratings], 23)})
+  `;
+
+  return data;
+}
 
 export async function getProductsById(id: string) {
-  console.log(id)
   try {
     const data = await sql`
       SELECT 

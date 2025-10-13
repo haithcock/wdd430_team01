@@ -14,8 +14,6 @@ export default async function ProductById({
   const { id } = params; // ✅ params is already available synchronously
   const product = await getProductsById(id);
 
-  console.log(product);
-
   return (
     <>
       {product ? (

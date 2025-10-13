@@ -1,22 +1,22 @@
-import { getProducts, getProductsByCategory } from "../../../../lib/data";
+import { getFilteredProducts, getProducts, getProductsByCategory } from "../../../../lib/data";
 import { unstable_noStore as noStore } from "next/cache";
 import ProductCard from "@/app/ui/ProductCard";
 
 // Products.tsx
 interface ProductProps {
-  category?: string; // Only accept category if you want to filter
-  // products?: Product[]; // remove this if fetching internally
+  categories?: string[];
+  ratings?: number[];
 }
 
-export default async function Products({ category }: ProductProps) {
+export default async function Products({ categories, ratings }: ProductProps) {//console.log(categories)
+  categories = categories?.filter(cat => cat !== '');//console.log(categories, ratings)
   noStore();
-  const products = category ? await getProductsByCategory(category) : await getProducts();
-  console.log(products);
+  const products = categories?.length || ratings?.length ? await getFilteredProducts(categories ?? [], ratings ?? []) : await getProducts();
 
   if (products.length === 0) {
     return (
       <p className="text-center text-gray-500 text-lg">
-        No products found{category ? ` in "${category}"` : ""} category.
+        No products found.
       </p>
     );
   }
