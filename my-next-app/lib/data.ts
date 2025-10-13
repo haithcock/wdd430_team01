@@ -93,26 +93,57 @@ export async function fetchFilteredProducts(
 
 
 
-export async function getProducts() {
-  const data = await sql`
+// export async function getProducts() {
+//   const data = await sql`
+//     SELECT 
+//     p.product_id,
+//     c.title AS category,
+//     p.name,
+//     p.artisan,
+//     p.rating,
+//     p.reviews,
+//     p.price,
+//     p.original_price,
+//     p.on_sale,
+//     p.image_url
+//     FROM products p
+//     JOIN categories c ON p.category_id = c.id;
+//   `;
+
+//   return data;
+// }
+type Row = {
+  product_id: number;
+  category: string;
+  name: string;
+  artisan: string;
+  rating: number;
+  reviews: number;
+  price: number;
+  original_price?: number;
+  on_sale: boolean;
+  image_url: string;
+};
+
+export async function getProducts(): Promise<Row[]> {
+  const data = await sql<Row[]>`
     SELECT 
-    p.product_id,
-    c.title AS category,
-    p.name,
-    p.artisan,
-    p.rating,
-    p.reviews,
-    p.price,
-    p.original_price,
-    p.on_sale,
-    p.image_url
+      p.product_id,
+      c.title AS category,
+      p.name,
+      p.artisan,
+      p.rating,
+      p.reviews,
+      p.price,
+      p.original_price,
+      p.on_sale,
+      p.image_url
     FROM products p
     JOIN categories c ON p.category_id = c.id;
   `;
 
-  return data;
+  return data; // now TypeScript knows it's Row[]
 }
-
 export async function getFeaturedProducts() {
   const data = await sql`
     SELECT 
@@ -189,3 +220,58 @@ export async function getCategories() {
 
   return data;
 }
+
+
+interface ProductFilterParams {
+  category?: string;
+  rating?: number;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+export async function productFilter({
+  category,
+  rating,
+  minPrice,
+  maxPrice,
+}: ProductFilterParams) {
+  try {
+    const conditions: any[] = [sql`1=1`];
+
+    // ✅ FIX: prefix category with table alias `c`
+    if (category) conditions.push(sql`c.title = ${category}`);
+    if (rating) conditions.push(sql`p.rating >= ${rating}`);
+    if (minPrice) conditions.push(sql`p.price >= ${minPrice}`);
+    if (maxPrice) conditions.push(sql`p.price <= ${maxPrice}`);
+
+    // join manually
+    const where = conditions.reduce(
+      (acc, cond, i) => (i === 0 ? cond : sql`${acc} AND ${cond}`),
+      sql``
+    );
+
+    const products = await sql`
+      SELECT 
+        p.product_id,
+        c.title AS category,
+        p.name,
+        p.artisan,
+        p.rating,
+        p.reviews,
+        p.price,
+        p.original_price,
+        p.on_sale,
+        p.image_url
+      FROM products p
+      JOIN categories c ON p.category_id = c.id
+      WHERE ${where}
+      ORDER BY p.price ASC
+    `;
+
+    return products;
+  } catch (error) {
+    console.error("Error filtering products:", error);
+    return [];
+  }
+}
+
