@@ -1,4 +1,5 @@
-import Products from "./Products"
+import Products from "./Products";
+import Filters from "@/app/ui/Filters";
 import { Metadata } from 'next';
  
 export const metadata: Metadata = {
@@ -9,9 +10,15 @@ export const dynamic = 'force-dynamic';
 
 export default function Catalog() {
   return (
-    <div className="grid gap-8 justify-center grid-cols-[repeat(auto-fit,minmax(200px,300px))] py-32 bg-gray-50 px-8">
+    <main className="min-h-screen bg-gray-50 py-16 px-4 md:px-8 lg:px-16">
+  <div className="flex flex-col md:flex-row md:space-x-6">
+    <Filters />
+    <div className="flex-1 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <Products />
     </div>
+  </div>
+</main>
+    
   );
 }
 
