@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 export default function Features() {
   const featureList = [
     { title: "Pottery", desc: "Pottery & Ceramics description" },
@@ -19,7 +24,7 @@ export default function Features() {
         <div className="grid gap-8 md:grid-cols-3">
           {featureList.map((feature) => (
             <Link
-              href={`/catalog/${feature.title.toLowerCase().replace(/\s+/g, '-')}`}
+              href={`/catalog?categories=${feature.title.replace(/\s+/g, '-')}`}
               key={feature.title}
               className="block"
             >
