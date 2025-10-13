@@ -37,17 +37,35 @@ export default function SellPage() {
     category: "",
     name: "",
     artisan: "",
-    rating: 5,
+    rating: 1,
     reviews: 0,
     price: "",
     originalPrice: undefined as number | undefined,
     onSale: false,
   });
+  
   const [file, setFile] = React.useState<File | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string>("");
   const [myProducts, setMyProducts] = React.useState<DbProduct[]>([]);
   const [loadingMyProducts, setLoadingMyProducts] = React.useState(false);
+  type Category = { id: number; title: string };
+
+const [categories, setCategories] = React.useState<{ id: number; title: string }[]>([]);
+
+React.useEffect(() => {
+  async function loadCategories() {
+    try {
+      const res = await fetch("/api/categories");
+      if (!res.ok) throw new Error("Failed to fetch categories");
+      const data = await res.json();
+      setCategories(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  void loadCategories();
+}, []);
 
   const [errors, setErrors] = React.useState<{
     name?: string;
@@ -117,7 +135,7 @@ export default function SellPage() {
       category: "",
       name: "",
       artisan: "",
-      rating: 5,
+      rating: 1,
       reviews: 0,
       price: "",
       originalPrice: undefined,
@@ -229,27 +247,26 @@ export default function SellPage() {
               {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1 text-gray-600">Category</label>
-              <select
-                className={`w-full border rounded-md px-3 py-2 ${
-                  form.category ? "text-black" : "text-gray-400"
-                } ${errors.category ? "border-red-500" : ""}`}
-                value={form.category}
-                onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-              >
-                <option value="" disabled>
-                  Select a category
-                </option>
-                <option value="Pottery & Ceramics">Pottery & Ceramics</option>
-                <option value="Jewelry">Jewelry</option>
-                <option value="Textiles & Fiber">Textiles & Fiber</option>
-                <option value="Woodworking">Woodworking</option>
-                <option value="Metalwork">Metalwork</option>
-                <option value="Glass Art">Glass Art</option>
-              </select>
-              {errors.category && <p className="text-red-600 text-sm mt-1">{errors.category}</p>}
-            </div>
+             <div>
+        <label className="block text-sm font-medium mb-1 text-gray-600">Category</label>
+        <select
+          className={`w-full border rounded-md px-3 py-2 ${
+            form.category ? "text-black" : "text-gray-400"
+          } ${errors.category ? "border-red-500" : ""}`}
+          value={form.category}
+          onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.title}>
+              {c.title}
+            </option>
+          ))}
+        </select>
+        {errors.category && <p className="text-red-600 text-sm mt-1">{errors.category}</p>}
+      </div>
 
             <div>
               <label className="block text-sm font-medium mb-1 text-gray-600">Artisan</label>
