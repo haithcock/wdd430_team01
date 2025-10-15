@@ -5,7 +5,7 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 
 type SeedProduct = {
-  category: string;
+  category_id: number;
   name: string;
   artisan: string;
   rating: number;
@@ -19,7 +19,7 @@ type SeedProduct = {
 
 const products: SeedProduct[] = [
   {
-    category: 'Pottery',
+    category_id: 1,
     name: 'Hand-Thrown Ceramic Vase',
     artisan: 'by Sarah Chen',
     rating: 4.9,
@@ -31,7 +31,7 @@ const products: SeedProduct[] = [
     featured: true
   },
   {
-    category: 'Jewelry',
+    category_id: 2,
     name: 'Sterling Silver Pendant Necklace',
     artisan: 'by Marcus Rivera',
     rating: 5,
@@ -42,7 +42,7 @@ const products: SeedProduct[] = [
     featured: true
   },
   {
-    category: 'Textiles',
+    category_id: 3,
     name: 'Handwoven Wool Throw Blanket',
     artisan: 'by Emma Thompson',
     rating: 4.8,
@@ -53,7 +53,7 @@ const products: SeedProduct[] = [
     featured: true
   },
   {
-    category: 'Woodworking',
+    category_id: 4,
     name: 'Reclaimed Wood Coffee Table',
     artisan: 'by David Park',
     rating: 4.9,
@@ -64,7 +64,7 @@ const products: SeedProduct[] = [
     featured: true
   },
   {
-    category: 'Glass Art',
+    category_id: 6,
     name: 'Blown Glass Vase',
     artisan: 'by Laura Kim',
     rating: 4.7,
@@ -76,7 +76,7 @@ const products: SeedProduct[] = [
     featured: false
   },
   {
-    category: 'Metalwork',
+    category_id: 5,
     name: 'Hand-Forged Iron Candle Holder',
     artisan: 'by Anthony Garcia',
     rating: 4.8,
@@ -87,7 +87,7 @@ const products: SeedProduct[] = [
     featured: false
   },
   {
-    category: 'Pottery',
+    category_id: 1,
     name: 'Glazed Ceramic Bowl Set',
     artisan: 'by Laura Kim',
     rating: 4.7,
@@ -99,7 +99,7 @@ const products: SeedProduct[] = [
     featured: false
   },
   {
-    category: 'Jewelry',
+    category_id: 2,
     name: 'Handcrafted Beaded Bracelet',
     artisan: 'by Anthony Garcia',
     rating: 4.6,
@@ -110,7 +110,7 @@ const products: SeedProduct[] = [
     featured: false
   },
   {
-    category: 'Textiles',
+    category_id: 3,
     name: 'Cotton Embroidered Pillow Cover',
     artisan: 'by Sophia Lee',
     rating: 4.9,
@@ -121,7 +121,7 @@ const products: SeedProduct[] = [
     featured: false
   },
   {
-    category: 'Woodworking',
+    category_id: 4,
     name: 'Handcrafted Wooden Cutting Board',
     artisan: 'by Michael Nguyen',
     rating: 5,
@@ -136,7 +136,7 @@ async function seedProducts() {
   await sql`DROP TABLE IF EXISTS products`;
   await sql`CREATE TABLE IF NOT EXISTS products (
     product_id SERIAL PRIMARY KEY,
-    category VARCHAR(100) NOT NULL,
+    category_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     artisan VARCHAR(100) NOT NULL,
     rating DECIMAL(2, 1) NOT NULL,
