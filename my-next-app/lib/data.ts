@@ -31,6 +31,7 @@ export async function fetchFilteredProducts(
       id: string;
       category: string;
       name: string;
+      description: string | null;
       artisan: string;
       rating: string;
       reviews: string;
@@ -43,6 +44,7 @@ export async function fetchFilteredProducts(
         p.product_id AS id,
         c.title AS category,
         p.name,
+        p.description,
         p.artisan,
         p.rating,
         p.reviews,
@@ -71,6 +73,7 @@ export async function fetchFilteredProducts(
       id: parseInt(p.id),
       category: p.category,
       name: p.name,
+      description: p.description ?? undefined,
       artisan: p.artisan,
       rating: parseFloat(p.rating),
       reviews: parseInt(p.reviews),
@@ -116,6 +119,7 @@ type Row = {
   product_id: number;
   category: string;
   name: string;
+  description?: string | null;
   artisan: string;
   rating: number;
   reviews: number;
@@ -131,6 +135,7 @@ export async function getProducts(): Promise<Row[]> {
       p.product_id,
       c.title AS category,
       p.name,
+      p.description,
       p.artisan,
       p.rating,
       p.reviews,
@@ -150,6 +155,7 @@ export async function getFeaturedProducts() {
     p.product_id,
     c.title AS category,
     p.name,
+    p.description,
     p.artisan,
     p.rating,
     p.reviews,
@@ -171,6 +177,7 @@ export async function getProductsByCategory(category: string) {
     p.product_id,
     c.title AS category,
     p.name,
+    p.description,
     p.artisan,
     p.rating,
     p.reviews,
@@ -194,6 +201,7 @@ export async function getProductsById(id: string) {
       p.product_id,
       c.title AS category,
       p.name,
+      p.description,
       p.artisan,
       p.rating,
       p.reviews,
@@ -255,6 +263,7 @@ export async function productFilter({
         p.product_id,
         c.title AS category,
         p.name,
+        p.description,
         p.artisan,
         p.rating,
         p.reviews,

@@ -49,6 +49,7 @@ export async function GET(req: Request) {
         p.product_id,
         c.title AS category,
         p.name,
+        p.description,
         p.artisan,
         p.rating,
         p.reviews,

@@ -413,6 +413,7 @@ type ProductItem = {
   id: number;
   category: string;
   name: string;
+  description?: string;
   artisan: string;
   rating: number;
   reviews: number;
@@ -430,6 +431,7 @@ type DbProduct = {
   rating: number;
   reviews: number;
   price: number;
+  description?: string | null;
   original_price: number | null;
   on_sale: boolean;
   image_url: string;
@@ -441,6 +443,7 @@ export default function SellPage() {
   const [form, setForm] = React.useState({
     categoryId: "", // now holds the category ID
     name: "",
+    description: "",
     artisan: "",
     rating: 1,
     reviews: 0,
@@ -489,6 +492,7 @@ export default function SellPage() {
     id: 0,
     category: selectedCategory,
     name: form.name || "Sample Product",
+    description: form.description || undefined,
     artisan: form.artisan || session?.user?.name || "Artisan",
     rating: form.rating,
     reviews: form.reviews,
@@ -521,6 +525,7 @@ export default function SellPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: form.name,
+        description: form.description || undefined,
         artisan: form.artisan,
         rating: form.rating,
         reviews: form.reviews,
@@ -542,6 +547,7 @@ export default function SellPage() {
     setForm({
       categoryId: "",
       name: "",
+      description: "",
       artisan: "",
       rating: 1,
       reviews: 0,
@@ -672,16 +678,28 @@ export default function SellPage() {
             </div>
 
             {/* Artisan */}
-            <div>
-              <label className="block text-sm font-medium mb-1 text-gray-600">Artisan</label>
-              <input
-                className="w-full border rounded-md px-3 py-2 text-black placeholder-gray-400"
-                value={form.artisan}
-                onChange={(e) => setForm((f) => ({ ...f, artisan: e.target.value }))}
-                placeholder="Your shop or name"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium mb-1 text-gray-600">Artisan</label>
+            <input
+              className="w-full border rounded-md px-3 py-2 text-black placeholder-gray-400"
+              value={form.artisan}
+              onChange={(e) => setForm((f) => ({ ...f, artisan: e.target.value }))}
+              placeholder="Your shop or name"
+            />
+          </div>
 
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium mb-1 text-gray-600">Description</label>
+            <textarea
+              className="w-full border rounded-md px-3 py-2 text-black placeholder-gray-400 min-h-28"
+              value={form.description}
+              onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
+              placeholder="Tell customers about your product (materials, size, story, etc.)"
+              maxLength={2000}
+            />
+            <p className="text-xs text-gray-500 mt-1">Up to 2000 characters.</p>
+          </div>
             {/* Price & On Sale */}
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -786,6 +804,7 @@ export default function SellPage() {
                         id: p.product_id,
                         category: p.category,
                         name: p.name,
+                        description: p.description ?? undefined,
                         artisan: p.artisan,
                         rating: p.rating,
                         reviews: p.reviews,

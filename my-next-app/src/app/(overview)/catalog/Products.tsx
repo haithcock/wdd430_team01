@@ -30,6 +30,7 @@ interface Product {
   product_id: number;
   category: string;
   name: string;
+  description?: string | null;
   artisan: string;
   rating: number;
   reviews: number;
@@ -75,6 +76,7 @@ export default async function Products({ category, rating, minPrice, maxPrice }:
       id: item.product_id, 
       category: item.category, 
       name: item.name, 
+      description: item.description ?? undefined,
       artisan: item.artisan, 
       rating: item.rating, 
       reviews: item.reviews, 
