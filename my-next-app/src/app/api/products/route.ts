@@ -14,6 +14,7 @@ const productSchema = z.object({
   rating: z.number().min(0).max(5).default(5),
   reviews: z.number().min(0).default(0),
   price: z.number().min(0),
+  description: z.string().max(2000).optional(),
   originalPrice: z.number().min(0).optional(),
   onSale: z.boolean().default(false),
   imageUrl: z.string().url(),
@@ -37,6 +38,7 @@ export async function POST(req: Request) {
     rating: body.rating,
     reviews: body.reviews,
     price: body.price,
+    description: body.description,
     originalPrice: body.onSale ? body.originalPrice : undefined,
     onSale: body.onSale,
     imageUrl: body.imageUrl,
@@ -59,20 +61,20 @@ export async function GET(req: Request) {
   if (mine === "1") {
     const artisan = session.user.name ?? "";
     const data = await sql`
-      SELECT product_id, c.title AS category  , name, artisan, rating, reviews, price, original_price, on_sale, image_url
-      FROM products JOIN categories c
-      ON products.category_id = c.id 
-      WHERE artisan = ${artisan}
-      ORDER BY product_id DESC
+      SELECT p.product_id, c.title AS category, p.name, p.artisan, p.rating, p.reviews, p.price, p.description, p.original_price, p.on_sale, p.image_url
+      FROM products p JOIN categories c
+      ON p.category_id = c.id 
+      WHERE p.artisan = ${artisan}
+      ORDER BY p.product_id DESC
     `;
     return NextResponse.json(data);
   }
 
   const data = await sql`
-    SELECT product_id, category as c.title, name, artisan, rating, reviews, price, original_price, on_sale, image_url
-    FROM products JOIN categories c
-    ON products.category_id = c.id 
-    ORDER BY product_id DESC
+    SELECT p.product_id, c.title AS category, p.name, p.artisan, p.rating, p.reviews, p.price, p.description, p.original_price, p.on_sale, p.image_url
+    FROM products p JOIN categories c
+    ON p.category_id = c.id 
+    ORDER BY p.product_id DESC
   `;
   return NextResponse.json(data);
 }

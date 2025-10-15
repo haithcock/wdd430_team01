@@ -7,6 +7,7 @@ export type ProductItem = {
   id: number;
   category: string;
   name: string;
+  description?: string;     // Added description field
   artisan: string;
   rating: number;
   reviews: number;
@@ -68,6 +69,11 @@ export default function ProductCard({ item, showAction = true }: ProductCardProp
             {item.name}
           </h3>
           <p className="text-sm text-gray-600">{item.artisan}</p>
+          {item.description && (
+            <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+              {item.description}
+            </p>
+          )}
 
           <div className="flex items-center space-x-1">
             {[...Array(5)].map((_, i) => (
