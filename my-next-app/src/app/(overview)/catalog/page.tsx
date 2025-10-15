@@ -11,13 +11,13 @@ export const dynamic = 'force-dynamic';
 export default async function Catalog({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | undefined };
+  searchParams: Promise<Record<string, string>>;
 }) {
   const params = await searchParams;
-  const category = searchParams.category; // e.g., "Jewelry"
-  const rating = searchParams.ratings ? Number(searchParams.ratings) : undefined; // e.g., 5
-  const minPrice = searchParams.min ? Number(searchParams.min) : undefined; // e.g., 250
-  const maxPrice = searchParams.max ? Number(searchParams.max) : undefined; // e.g., 450
+  const category = params.category;
+  const rating = params.ratings ? Number(params.ratings) : undefined;
+  const minPrice = params.min ? Number(params.min) : undefined;
+  const maxPrice = params.max ? Number(params.max) : undefined;
   return (
     <main className="min-h-screen bg-gray-50 py-16 px-4 md:px-8 lg:px-16">
   <div className="flex flex-col md:flex-row md:space-x-6">

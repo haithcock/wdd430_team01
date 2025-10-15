@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import Button from "./Button";
+import Reviews from "./Reviews";
 
 const ProductDetails = ({ product }) => {
   const imgRef = useRef(null);
@@ -97,9 +98,9 @@ const ProductDetails = ({ product }) => {
 
           <div className="font-semibold">
             <h1 className="text-gray-500 review-title mb-6 mt-10 text-2xl">
-              Other Customers Reviews
+              Customers Reviews
             </h1>
-            {/* Future <Reviews /> component here */}
+             <Reviews product_id={product.product_id}/>
           </div>
         </div>
       </section>

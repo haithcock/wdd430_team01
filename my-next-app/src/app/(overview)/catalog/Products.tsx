@@ -19,9 +19,9 @@ interface Product {
 
 interface ProductProps {
   category?: string;
-  rating?: number;    // Add this
-  minPrice?: number;  // Add this
-  maxPrice?: number;  // Add this
+  rating?: number;    
+  minPrice?: number;  
+  maxPrice?: number; 
 }
 
 
@@ -91,44 +91,3 @@ export default async function Products({ category, rating, minPrice, maxPrice }:
   );
 }
 
-
-//suggestion from chatgpt
-
-// // Products.tsx
-// import ProductCard from "@/app/ui/ProductCard";
-// import { getProductsByCategory, getProductsFiltered } from "../../../../lib/data";
-
-// export default async function Products({ searchParams }: { searchParams: any }) {
-//   const products = await getProductsByCategory() || await getProductsFiltered({
-//     category: searchParams?.category,
-//     min: searchParams?.min,
-//     max: searchParams?.max,
-//     ratings: searchParams?.ratings,
-//   });
-
-//   if (!products || products.length === 0) {
-//     return <p>No products found.</p>;
-//   }
-
-//   return (
-//     <>
-//       {products.map((item) => (
-//         <ProductCard
-//           key={item.product_id}
-//           item={{
-//             id: item.product_id,
-//             category: item.category,
-//             name: item.name,
-//             artisan: item.artisan,
-//             rating: item.rating,
-//             reviews: item.reviews,
-//             price: item.price,
-//             originalPrice: item.original_price,
-//             onSale: item.on_sale,
-//             imageUrl: item.image_url,
-//           }}
-//         />
-//       ))}
-//     </>
-//   );
-// }

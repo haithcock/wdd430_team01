@@ -284,3 +284,23 @@ export async function productFilter({
   }
 }
 
+export interface Review {
+  product_id: number;
+  review_id: number;
+  user_name: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+}
+
+export async function getReviewsByProduct(product_id: string): Promise<Review[]> {
+  const rows = await sql`
+    SELECT review_id, product_id, user_name, rating, comment, created_at
+    FROM reviews
+    WHERE product_id = ${product_id}
+    ORDER BY created_at DESC
+  `;
+
+  // Convert RowList to plain array and cast to Review[]
+  return (rows as unknown as Review[]) || [];
+}
